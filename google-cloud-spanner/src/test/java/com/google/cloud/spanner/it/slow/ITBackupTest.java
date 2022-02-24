@@ -468,11 +468,8 @@ public class ITBackupTest {
         try {
           client.cancelOperation(op.getName());
         } catch (SpannerException e) {
-          // Ignore UNIMPLEMENTED errors, as it seems that Cloud Spanner cannot cancel a restore
-          // operation that has already started.
-          if (e.getErrorCode() != ErrorCode.UNIMPLEMENTED) {
-            throw e;
-          }
+          // Ignore, this is expected as it cannot find the backup that we are trying to
+          // restore.
         }
         // Assert that the RestoreDatabase RPC was called only once, and that the operation
         // tracking was resumed through a GetOperation call.
