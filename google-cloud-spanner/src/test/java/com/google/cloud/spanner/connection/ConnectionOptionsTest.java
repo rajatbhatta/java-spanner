@@ -18,6 +18,7 @@ package com.google.cloud.spanner.connection;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -30,6 +31,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.NoCredentials;
 import com.google.cloud.spanner.ErrorCode;
+import com.google.cloud.spanner.Spanner;
 import com.google.cloud.spanner.SpannerException;
 import com.google.cloud.spanner.SpannerOptions;
 import com.google.common.io.BaseEncoding;
@@ -146,6 +148,27 @@ public class ConnectionOptionsTest {
     assertEquals("test-database-123", options.getDatabaseName());
     assertEquals(NoCredentials.getInstance(), options.getCredentials());
     assertTrue(options.isUsePlainText());
+  }
+
+  @Test
+  public void testBuildWithRouteToLeader() {
+    ConnectionOptions.Builder builder = ConnectionOptions.newBuilder();
+    builder.setUri(
+        "cloudspanner:/projects/test-project-123/instances/test-instance-123/databases/test-database-123?routeToLeader=false");
+    ConnectionOptions options = builder.build();
+    assertEquals(options.getHost(), DEFAULT_HOST);
+    assertEquals(options.getProjectId(), "test-project-123");
+    assertEquals(options.getInstanceId(), "test-instance-123");
+    assertEquals(options.getDatabaseName(), "test-database-123");
+    assertFalse(options.isRouteToLeader());
+
+    // Test for default behavior for routeToLeader property.
+    builder = ConnectionOptions
+        .newBuilder()
+        .setUri(
+            "cloudspanner:/projects/test-project-123/instances/test-instance-123/databases/test-database-123");
+    options = builder.build();
+    assertTrue(options.isRouteToLeader());
   }
 
   @Test
