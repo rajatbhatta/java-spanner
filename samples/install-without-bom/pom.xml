@@ -32,7 +32,7 @@
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-spanner</artifactId>
-      <version>6.36.0</version>
+      <version>6.36.1</version>
     </dependency>
     <!-- [END spanner_install_without_bom] -->
     
@@ -139,7 +139,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.0.0-M8</version>
+        <version>3.0.0-M9</version>
         <configuration>
           <systemPropertyVariables>
             <spanner.test.instance>spanner-testing-east1</spanner.test.instance>
